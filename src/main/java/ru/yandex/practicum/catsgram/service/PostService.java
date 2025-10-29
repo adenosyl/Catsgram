@@ -6,10 +6,8 @@ import ru.yandex.practicum.catsgram.exception.NotFoundException;
 import ru.yandex.practicum.catsgram.model.Post;
 
 import java.time.Instant;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class PostService {
@@ -22,6 +20,19 @@ public class PostService {
 
     public Collection<Post> findAll() {
         return posts.values();
+    }
+
+    public List<Post> findAll(int from, int size, SortOrder sort) {
+        Comparator<Post> comparator = Comparator.comparing(Post::getPostDate);
+        if (sort == SortOrder.DESCENDING) {
+            comparator = comparator.reversed();
+        }
+
+        return posts.values().stream()
+                .sorted(comparator)
+                .skip(from)
+                .limit(size)
+                .collect(Collectors.toList());
     }
 
     public Post create(Post post) {

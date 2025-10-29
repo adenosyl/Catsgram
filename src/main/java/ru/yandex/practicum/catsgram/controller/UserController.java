@@ -5,7 +5,6 @@ import ru.yandex.practicum.catsgram.model.User;
 import ru.yandex.practicum.catsgram.service.UserService;
 import ru.yandex.practicum.catsgram.exception.NotFoundException;
 
-
 import java.util.Collection;
 
 @RestController

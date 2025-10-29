@@ -4,8 +4,9 @@ import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.catsgram.model.Post;
 import ru.yandex.practicum.catsgram.service.PostService;
 import ru.yandex.practicum.catsgram.exception.NotFoundException;
+import ru.yandex.practicum.catsgram.service.SortOrder;
 
-import java.util.Collection;
+import java.util.*;
 
 @RestController
 @RequestMapping("/posts")
@@ -18,8 +19,17 @@ public class PostController {
     }
 
     @GetMapping
-    public Collection<Post> findAll() {
-        return postService.findAll();
+    public List<Post> findAll(
+            @RequestParam(defaultValue = "desc") String sort,
+            @RequestParam(defaultValue = "0") int from,
+            @RequestParam(defaultValue = "10") int size) {
+
+        if (size <= 0) {
+            throw new IllegalArgumentException("Параметр size должен быть больше 0");
+        }
+
+        SortOrder sortOrder = SortOrder.from(sort);
+        return postService.findAll(from, size, sortOrder);
     }
 
     @PostMapping
