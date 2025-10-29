@@ -9,6 +9,7 @@ import java.time.Instant;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class PostService {
@@ -57,5 +58,9 @@ public class PostService {
     private long getNextId() {
         long currentMaxId = posts.keySet().stream().mapToLong(id -> id).max().orElse(0);
         return ++currentMaxId;
+    }
+
+    public Optional<Post> findPostById(Long id) {
+        return Optional.ofNullable(posts.get(id));
     }
 }
